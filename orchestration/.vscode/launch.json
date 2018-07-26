@@ -1,0 +1,73 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Docker Launch",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "compose-for-debug",
+            "cwd": "/app",
+            "program": "/app/Newgistics.Fulfillment.AutoStore.dll",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "container",
+                "REMOTE_DEBUGGING": "true"
+            },
+            "sourceFileMap": {
+                "/app": "${workspaceRoot}"
+            },
+            "launchBrowser": {
+                "enabled": true,
+                "args": "http://localhost:5051/swagger",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start http://localhost:5051/swagger"
+                },
+                "osx": {
+                    "command": "open"
+                }
+            },
+            "pipeTransport": {
+                "debuggerPath": "/vsdbg/vsdbg",
+                "pipeProgram": "docker",
+                "pipeCwd": "${workspaceRoot}",
+                "pipeArgs": [
+                    "exec -i dev_ngs-nff-autostore-integration_1"
+                ],
+                "quoteArgs": false
+            }
+        },
+        
+        {
+            "name": "Local Launch",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Newgistics.Fulfillment.AutoStore",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "development",
+                "ASPNETCORE_URLS": "http://+:5051"
+            },
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "args": "http://localhost:5051/swagger",
+                "enabled": true,
+                "linux": {
+                    "command": "xdg-open"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "windows": {
+                    "args": "/C start http://localhost:5051/swagger",
+                    "command": "cmd.exe"
+                }
+            },
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/Newgistics.Fulfillment.AutoStore/bin/Debug/netcoreapp2.1/Newgistics.Fulfillment.AutoStore.dll",
+            "request": "launch",
+            "sourceFileMap": {
+                "/src": "${workspaceFolder}/src"
+            },
+            "stopAtEntry": false,
+            "type": "coreclr"
+        },
+    ]
+}

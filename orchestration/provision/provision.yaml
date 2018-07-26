@@ -1,0 +1,144 @@
+# #############################################################################
+# Service Provisioning Configuration (Helm)
+#
+
+environments:
+  
+  dev: 
+    description: Development Environment (Docker K8S)
+    context: docker-for-desktop
+    hostfile: true
+    hostname: dev.christophertown.com
+    override: dev
+    provider: local
+  int-aws: 
+    description: Integration Environment (AWS)
+    context: eks-cluster-int-aws
+    hostname: int.christophertown.co
+    override: int
+    provider: aws
+  int-azure: 
+    description: Integration Environment (Azure)
+    context: aks-cluster-int-azure
+    hostname: int.christophertown.com
+    override: int
+    provider: azure
+  prod: 
+    description: Production Environment
+    context: eks-cluster-prod
+    hostname: christophertown.com
+    provider: aws
+
+groups:
+
+  development:
+    - metrics-server
+    - kubernetes-dashboard
+    - nginx-ingress
+    - cert-manager
+    - openvpn
+    - prometheus
+    - grafana
+    - redis   
+    - mongodb
+
+  integration-aws:
+    - metrics-server
+    - kubernetes-dashboard
+    - nginx-ingress
+    - cert-manager
+    - openvpn
+    - prometheus
+    - grafana
+    - redis   
+    - mongodb
+  
+  integration-azure:
+    - metrics-server
+    - nginx-ingress
+    - cert-manager
+    - openvpn
+    - prometheus
+    - grafana
+    - redis   
+    - mongodb
+
+  production:
+    - metrics-server
+    - prometheus
+    - nginx-ingress
+    - cert-manager
+    - openvpn
+    - grafana
+
+services:
+
+  cert-manager:
+    description: Let's encrypt SSL cert generator
+    chart: stable/cert-manager
+    namespace: default
+    post-deploy:
+      - manifests/cluster-issuers.yaml
+
+  courses-service:
+    description: Sample course microservice
+    chart: ./charts/dnc-service
+    namespace: default
+
+  grafana:
+    description: Grafana dashboards
+    chart: stable/grafana
+    namespace: default
+
+  kubernetes-dashboard:
+    description: Kubernetes dashboard
+    chart: stable/kubernetes-dashboard
+    namespace: default
+
+  kube-state-metrics:
+    description: Kube state metrics service
+    chart: stable/kube-state-metrics
+    namespace: default
+
+  keel:
+    description: Keel automated deployments
+    chart: stable/keel
+    namespace: default
+
+  metrics-server:
+    description: Kubernetes metrics server
+    chart: stable/metrics-server
+    namespace: default
+
+  mongodb:
+    description: Mongo document database server
+    chart: stable/mongodb
+    namespace: default
+
+  mssql-linux:
+    description: Microsoft SQL linux server
+    chart: stable/mssql-linux
+    namespace: default
+
+  nginx-ingress:
+    description: Nginx ingress proxy
+    chart: stable/nginx-ingress
+    namespace: default
+  
+  openvpn:
+    description: OpenVPN server
+    chart: stable/openvpn
+    namespace: default
+    
+  prometheus:
+    description: Prometheus cluster metrics for Kubernetes
+    chart: stable/prometheus
+    namespace: default
+
+  redis:
+    description: Redis key value store cache service
+    chart: stable/redis
+    namespace: default
+
+
+# #############################################################################

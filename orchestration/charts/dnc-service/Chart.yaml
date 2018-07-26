@@ -1,0 +1,9 @@
+name: dnc-service
+version: 1.0
+appVersion: 5.1.3
+kubeVersion: "^1.8.0-0"
+description: A Helm chart for deploying a dotnet core web service
+maintainers:
+  - name: christophla
+    email: chris@cdinc.net
+engine: gotpl

@@ -1,0 +1,51 @@
+# Default values for ngs-nff-autostore-integration-service.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 2
+
+image:
+  repository: demochristophertown.azurecr.io/k8s/courses-service
+  tag: "1.0"
+  pullPolicy: Always
+  pullSecret: docker-registry
+
+service:
+  name: courses-service
+  type: ClusterIP  #NodePort #Loadbalancer
+  externalPort: 5051
+  internalPort: 80
+  livenessProbePath: ping
+  readinessProbePath: /health
+
+ingress:
+  enabled: true
+  hosts:
+    - courses-service.christophertown.com
+  annotations:
+    certmanager.k8s.io/cluster-issuer: letsencrypt-staging
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+  tls:
+    - secretName: courses-service-nginx-ingress-int-crt
+      hosts:
+        - courses-service.christophertown.com
+
+resources:
+  limits:
+    cpu: 900m
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+env:
+  ASPNETCORE_ENVIRONMENT: "integration"
+  
+# keel:
+#   policy: all # (all/major/minor/patch/force)
+#   trigger: poll
+#   pollSchedule: "@every 1m"
+#   images:
+#     - repository: image.repository 
+#       tag: image.tag  

@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A Helm chart for deploying worker role
+name: worker
+version: 0.1.1

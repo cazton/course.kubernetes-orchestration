@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "dnc-service.fullname" . }}
+  labels:
+    app: {{ template "dnc-service.name" . }}
+    chart: {{ template "dnc-service.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+  - port: {{ .Values.service.externalPort }}
+    targetPort: {{ .Values.service.internalPort }}
+    protocol: TCP
+    name: {{ .Values.service.name }}
+  selector:
+    app: {{ template "dnc-service.name" . }}
+  {{if eq .Values.service.type "LoadBalancer"}}
+  loadBalancerSourceRanges: {{.Values.service.LoadBalancerSourceRanges}}
+  {{end}}

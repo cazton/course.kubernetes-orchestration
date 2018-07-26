@@ -1,0 +1,17 @@
+{
+    "recommendations": [
+        "EditorConfig.editorconfig",
+        "PeterJausovec.vscode-docker",
+        "codezombiech.gitignore",
+        "dotjoshjohnson.xml",
+        "eamodio.gitlens",
+        "jchannon.csharpextensions",
+        "mauve.terraform",
+        "michelemelluso.code-beautifier",
+        "ms-vscode.csharp",
+        "pflannery.vscode-versionlens",
+        "robertohuertasm.vscode-icons",
+        "ryanluker.vscode-coverage-gutters",
+    ]
+}
+

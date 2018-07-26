@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "appworker.name" . }}   
+  labels:  
+    app: {{ template "appworker.name" . }}
+    chart: {{ template "appworker.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "appworker.name" . }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        livenessProbe:
+          exec:
+            command:
+            - {{ .Values.service.livenessProbeCommand }}
+        readinessProbe:
+          exec:
+            command:
+            - {{ .Values.service.readinessProbeCommand }}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
+        env:
+        - name: UNUSED_CMD #this is only here because you otherwise I would have to put a huge if statement in place
+          value: ""
+        {{- range $key, $val := .Values.env }}
+        - name: {{ $key }}
+          value: {{ $val | quote }}
+        {{- end}}
+        {{- if .Values.envSecrets }}
+{{ toYaml .Values.envSecrets | indent 8 }}
+        {{- end -}}
+      {{- if .Values.image.pullSecret }}
+      imagePullSecrets:
+      - name: {{ .Values.image.pullSecret }}
+      {{- end -}}

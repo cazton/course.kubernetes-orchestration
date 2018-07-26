@@ -1,0 +1,73 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "setup",
+            "type": "shell",
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh setup"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 -Setup"
+            }
+        },
+        {
+            "label": "cluster-dashboard",
+            "type": "shell",
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh dashboard azure"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 -Dashboard -CloudProvider azure"
+            }
+        },
+        {
+            "label": "cluster-deploy",
+            "type": "shell",
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh deployCluster azure"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 -DeployCluster -CloudProvider azure"
+            }
+        },
+        {
+            "label": "cluster-destroy",
+            "type": "shell",
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh destroyCluster azure"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 -DestroyCluster -CloudProvider azure"
+            }
+        }
+    ]
+}

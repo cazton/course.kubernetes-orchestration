@@ -1,0 +1,22 @@
+{{- if .Values.horizontalPodAutoscaler.enabled -}}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ template "dnc-service.fullname" . }}
+  labels:
+    app: {{ template "service.name" . }}
+    chart: {{ template "service.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: {{ template "dnc-service.fullname" . }}
+  minReplicas: {{ .Values.horizontalPodAutoscaler.spec.minReplicas }}
+  maxReplicas: {{ .Values.horizontalPodAutoscaler.spec.maxReplicas }}
+  {{- if .Values.horizontalPodAutoscaler.spec.metrics}}
+  metrics:
+{{ toYaml .Values.horizontalPodAutoscaler.spec.metrics | indent 2 }}
+  {{- end -}} 
+{{- end -}}
