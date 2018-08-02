@@ -2,11 +2,13 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 2
+replicaCount: 1
+
+fullnameOverride: courses-service
 
 image:
-  repository: demochristophertown.azurecr.io/k8s/courses-service
-  tag: "1.0"
+  repository: christophla/movie-catalog
+  tag: "latest"
   pullPolicy: Always
   pullSecret: docker-registry
 
@@ -36,11 +38,12 @@ resources:
     cpu: 900m
     memory: 1024Mi
   requests:
-    cpu: 500m
-    memory: 512Mi
+    cpu: 128m
+    memory: 128Mi
 
 env:
   ASPNETCORE_ENVIRONMENT: "integration"
+  ASPNETCORE_URLS: "http://+:80"
   
 # keel:
 #   policy: all # (all/major/minor/patch/force)

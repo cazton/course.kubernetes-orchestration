@@ -80,7 +80,7 @@ services:
     post-deploy:
       - manifests/cluster-issuers.yaml
 
-  courses-service:
+  movie-catalog:
     description: Sample course microservice
     chart: ./charts/dnc-service
     namespace: default

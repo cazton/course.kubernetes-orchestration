@@ -602,12 +602,26 @@ Function Setup () {
     Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
     Write-Host ""
     
+    # Install chocolatey
     If (!(Get-Command choco.exe -ErrorAction SilentlyContinue)) {
         Write-Host "Installing Chocolatey" -ForegroundColor "Yellow"
         Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
     }
 
+    # Install psyaml parser
+    Write-Host "Installing PSYaml Module" -ForegroundColor "Yellow"
+    Install-Module PSYaml
+
+    # Install terraform
+    If (!(Get-Command terraform -ErrorAction SilentlyContinue)) {
+        Write-Host "Installing Terraform" -ForegroundColor "Yellow"
+        choco install -y terraform 
+        choco upgrade -y terraform 
+    }
+
     # Environment
+    $config = GetProvisionConfig
+
     If (!($config.environments.$Environment)){
         Write-Host "Environment '$Environment' not found in provision.yaml" -ForegroundColor "Red"
         Exit 1        
@@ -626,18 +640,7 @@ Function Setup () {
             Write-Host "Valid values are AWS and Azure" -ForegroundColor "Red"
             Exit 1
         }
-    }
-
-    # Install terraform
-    If (!(Get-Command terraform -ErrorAction SilentlyContinue)) {
-        Write-Host "Installing Terraform" -ForegroundColor "Yellow"
-        choco install -y terraform 
-        choco upgrade -y terraform 
-    }
-
-    # Install powershell-yaml parser
-    Install-Module powershell-yaml
-    
+    }    
 }
 
 
@@ -760,8 +763,8 @@ Function GetProvisionConfig () {
         Exit 1
     }
 
-    # Write-Host "Importing powershell-yaml... please wait" -ForegroundColor "Yellow"
-    Import-Module powershell-psyaml
+    # Write-Host "Importing PSYaml... please wait" -ForegroundColor "Yellow"
+    # Import-Module PSYaml
 
     # Parse provision.yaml into memory with proper line endings
     [string[]]$fileContent = Get-Content "$WorkingDir/provision/provision.yaml"
@@ -887,23 +890,23 @@ ElseIf ($InitContext) {
     InitContext
 }
 ElseIf ($ProvisionService) {
-    InitContext
+    EnsureContext
     ProvisionService
 }
 ElseIf ($ProvisionServiceGroup) {
-    InitContext
+    EnsureContext
     ProvisionServiceGroup
 }
 ElseIf ($ProxyService) {
-    InitContext
+    EnsureContext
     ProxyService
 }
 ElseIf ($ShellService) {
-    InitContext
+    EnsureContext
     ShellService
 }
 ElseIf ($RemoveService) {
-    InitContext
+    EnsureContext
     RemoveService
 }
 ElseIf ($Setup) {
