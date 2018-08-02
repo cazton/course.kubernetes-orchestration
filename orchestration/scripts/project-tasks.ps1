@@ -30,6 +30,8 @@
 	Proxies a service in the cluster with port forwarding
 .PARAMETER ServiceName
 	The service name from provision.yaml to deploy
+.PARAMETER ServiceInstance
+	The service instance name (for multi service deployments) (e.g. rabbit-mq-discovery)
 .PARAMETER ServiceGroupName
 	The service group from provision.yaml to deploy
 .PARAMETER ShellService
@@ -68,6 +70,7 @@ Param(
     [String]$Namespace = "default",
     [String]$HostPort,
     [String]$ServiceGroupName = "development",
+    [String]$ServiceInstance = "",
     [String]$ServiceName = ""
 )
 
@@ -523,18 +526,30 @@ Function ProxyService () {
     Write-Host ""
     
     $name = kubectl get services --selector=app=$ServiceName -o jsonpath="{.items..metadata.name}" 
-    Write-Host "$name"
 
     If (!$name) {
         Write-Host "Service $ServiceName not running in cluster" -ForegroundColor "Red"
         Exit 1
+    } ElseIf ($name.split(' ').Count -gt 1 -and !$ServiceInstance) {
+        Write-Host "More than one service found matching service deployment for '$ServiceName'" -ForegroundColor "Red"
+        Write-Host "-> $name" -ForegroundColor "Red"
+        Write-Host "Please designate the desired instance with -ServiceInstance option" -ForegroundColor "Red"
+        exit 1
+    }
+
+    If ($ServiceInstance) {
+        $name = $ServiceInstance
+        $servicePort = kubectl get services $ServiceInstance -o jsonpath="{.spec.ports[0].port}"
+        $targetPort = kubectl get services $ServiceInstance -o jsonpath="{.spec.ports[0].targetPort}" 
+
+    } Else {
+        $servicePort = kubectl get services --selector=app=$ServiceName -o jsonpath="{.items..spec.ports[0].port}"
+        $targetPort = kubectl get services --selector=app=$ServiceName -o jsonpath="{.items..spec.ports[0].targetPort}" 
     }
 
     If (!$HostPort) {
         $HostPort = Get-Random -Minimum 8010 -Maximum 9000
     }
-    $servicePort = kubectl get services --selector=app=$ServiceName -o jsonpath="{.items..spec.ports[0].port}"
-    $targetPort = kubectl get services --selector=app=$ServiceName -o jsonpath="{.items..spec.ports[0].targetPort}" 
     
     Write-Host "Opening http(s)://localhost:$hostPort. Press ctrl-c to cancel..." -ForegroundColor "Green"
 

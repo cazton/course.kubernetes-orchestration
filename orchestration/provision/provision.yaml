@@ -71,6 +71,10 @@ groups:
     - openvpn
     - grafana
 
+repositories:
+  - name: coreos 
+    uri: https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
+
 services:
 
   cert-manager:
@@ -133,6 +137,16 @@ services:
   prometheus:
     description: Prometheus cluster metrics for Kubernetes
     chart: stable/prometheus
+    namespace: monitoring
+
+  prometheus-operator:
+    description: Prometheus operator
+    chart: coreos/prometheus-operator
+    namespace: monitoring
+
+  rabbitmq-ha:
+    description: High availability RabbitMQ cluster
+    chart: stable/rabbitmq-ha
     namespace: default
 
   redis:

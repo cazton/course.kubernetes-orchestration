@@ -166,6 +166,9 @@ dashboards:
     kube-pods:
       gnetId: 6336
       datasource: kube
+    rabbitmq:
+      gnetId: 4279
+      datasource: kube
     redis:
       gnetId: 763
       datasource: kube

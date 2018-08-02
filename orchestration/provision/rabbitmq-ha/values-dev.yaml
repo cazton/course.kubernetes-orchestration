@@ -2,7 +2,7 @@
 ## Ref: http://rabbitmq.com/access-control.html
 ##
 rabbitmqUsername: guest
-# rabbitmqPassword:
+rabbitmqPassword: guest
 
 ## RabbitMQ default VirtualHost
 ## Ref: https://www.rabbitmq.com/vhosts.html
@@ -294,7 +294,7 @@ prometheus:
   ## Prometheus is using Operator.  Setting to true will create Operator specific resources like ServiceMonitors and Alerts
   operator:
     ## Are you using Prometheus Operator? [Blog Post](https://coreos.com/blog/the-prometheus-operator.html)
-    enabled: true
+    enabled: false
 
     ## Configures Alerts, which will be setup via Prometheus Operator / ConfigMaps.
     alerts:
@@ -312,7 +312,7 @@ prometheus:
       interval: 10s
 
       # Namespace Prometheus is installed in
-      namespace: monitoring
+      namespace: kube-system
 
       ## Defaults to whats used if you follow CoreOS [Prometheus Install Instructions](https://github.com/coreos/prometheus-operator/tree/master/helm#tldr)
       ## [Prometheus Selector Label](https://github.com/coreos/prometheus-operator/blob/master/helm/prometheus/templates/prometheus.yaml#L65)
