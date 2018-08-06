@@ -41,6 +41,7 @@ groups:
     - grafana
     - redis   
     - mongodb
+    - rabbitmq-ha
 
   integration-aws:
     - metrics-server
@@ -92,7 +93,7 @@ services:
   grafana:
     description: Grafana dashboards
     chart: stable/grafana
-    namespace: default
+    namespace: monitoring
 
   kubernetes-dashboard:
     description: Kubernetes dashboard
@@ -144,9 +145,14 @@ services:
     chart: coreos/prometheus-operator
     namespace: monitoring
 
+  rabbitmq:
+    description: RabbitMQ cluster
+    chart: stable/rabbitmq
+    namespace: default
+
   rabbitmq-ha:
     description: High availability RabbitMQ cluster
-    chart: stable/rabbitmq-ha
+    chart: ./charts/rabbitmq-ha
     namespace: default
 
   redis:

@@ -2,7 +2,7 @@
 ## Ref: http://rabbitmq.com/access-control.html
 ##
 rabbitmqUsername: guest
-rabbitmqPassword: guest
+# rabbitmqPassword:
 
 ## RabbitMQ default VirtualHost
 ## Ref: https://www.rabbitmq.com/vhosts.html
@@ -136,7 +136,7 @@ rabbitmqAmqpsSupport:
     # ssl_options.fail_if_no_peer_cert  = false
 
 ## Number of replicas
-replicaCount: 1
+replicaCount: 3
 
 image:
   repository: rabbitmq
@@ -158,14 +158,6 @@ service:
   loadBalancerIP: ""
   loadBalancerSourceRanges: []
   type: ClusterIP
-
-## Pod Security Context
-## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
-##
-securityContext:
-  enabled: true
-  fsGroup: 1001
-  runAsUser: 1001
 
 ## Statefulsets rolling update update strategy
 ## Ref: https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#rolling-update
@@ -192,7 +184,7 @@ resources: {}
 
 ## Data Persistency
 persistentVolume:
-  enabled: true
+  enabled: false
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
   ## If undefined (the default) or set to null, no storageClassName spec is
@@ -203,7 +195,7 @@ persistentVolume:
   name: data
   accessModes:
     - ReadWriteOnce
-  size: 2Gi
+  size: 8Gi
   annotations: {}
 
 ## Node labels for pod assignment
@@ -246,25 +238,23 @@ serviceAccount:
 
 ingress:
   ## Set to true to enable ingress record generation
-  enabled: true
+  enabled: false
 
   path: /
 
   ## The list of hostnames to be covered with this ingress record.
   ## Most likely this will be just one host, but in the event more hosts are needed, this is an array
-  hostName: rabbitmq-ha.dev.christophertown.com
+  ## hostName: foo.bar.com
 
   ## Set this to true in order to enable TLS on the ingress record
   tls: false
 
   ## If TLS is set to true, you must declare what secret will store the key/certificate for TLS
-  tlsSecret: rabbitmq-ha-nginx-ingress-crt
+  tlsSecret: myTlsSecret
 
   ## Ingress annotations done as key:value pairs
   annotations:
-    # certmanager.k8s.io/cluster-issuer: letsencrypt-staging
-    kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "false"
+  #  kubernetes.io/ingress.class: nginx
 
 livenessProbe:
   initialDelaySeconds: 120
@@ -282,7 +272,7 @@ existingSecret: ""
 prometheus:
   ## Configures Prometheus Exporter to expose and scrape stats.
   exporter:
-    enabled: true
+    enabled: false
     env: {}
     image:
       repository: kbudde/rabbitmq-exporter
@@ -304,7 +294,7 @@ prometheus:
   ## Prometheus is using Operator.  Setting to true will create Operator specific resources like ServiceMonitors and Alerts
   operator:
     ## Are you using Prometheus Operator? [Blog Post](https://coreos.com/blog/the-prometheus-operator.html)
-    enabled: false
+    enabled: true
 
     ## Configures Alerts, which will be setup via Prometheus Operator / ConfigMaps.
     alerts:
@@ -322,7 +312,7 @@ prometheus:
       interval: 10s
 
       # Namespace Prometheus is installed in
-      namespace: kube-system
+      namespace: monitoring
 
       ## Defaults to whats used if you follow CoreOS [Prometheus Install Instructions](https://github.com/coreos/prometheus-operator/tree/master/helm#tldr)
       ## [Prometheus Selector Label](https://github.com/coreos/prometheus-operator/blob/master/helm/prometheus/templates/prometheus.yaml#L65)
