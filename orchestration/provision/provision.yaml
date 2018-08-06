@@ -41,6 +41,7 @@ groups:
     - grafana
     - redis   
     - mongodb
+    - rabbitmq-ha
 
   integration-aws:
     - metrics-server
@@ -71,6 +72,10 @@ groups:
     - openvpn
     - grafana
 
+repositories:
+  - name: coreos 
+    uri: https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/
+
 services:
 
   cert-manager:
@@ -80,7 +85,7 @@ services:
     post-deploy:
       - manifests/cluster-issuers.yaml
 
-  courses-service:
+  movie-catalog:
     description: Sample course microservice
     chart: ./charts/dnc-service
     namespace: default
@@ -88,7 +93,7 @@ services:
   grafana:
     description: Grafana dashboards
     chart: stable/grafana
-    namespace: default
+    namespace: monitoring
 
   kubernetes-dashboard:
     description: Kubernetes dashboard
@@ -133,6 +138,21 @@ services:
   prometheus:
     description: Prometheus cluster metrics for Kubernetes
     chart: stable/prometheus
+    namespace: monitoring
+
+  prometheus-operator:
+    description: Prometheus operator
+    chart: coreos/prometheus-operator
+    namespace: monitoring
+
+  rabbitmq:
+    description: RabbitMQ cluster
+    chart: stable/rabbitmq
+    namespace: default
+
+  rabbitmq-ha:
+    description: High availability RabbitMQ cluster
+    chart: ./charts/rabbitmq-ha
     namespace: default
 
   redis:

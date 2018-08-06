@@ -17,13 +17,13 @@ This chart can be installed manually or by using the *project-tasks* script.
 #### Install
 
 ```powershell
-./scripts/project-tasks.ps1 -ProvisionService -ServiceName openvpn -CloudProvider aws
+./scripts/project-tasks.ps1 -ProvisionService -ServiceName openvpn -Environment dev
 ```
 
 #### Uninstall
 
 ```powershell
-./scripts/project-tasks.ps1 -DestroyService -ServiceName openvpn -CloudProvider aws
+./scripts/project-tasks.ps1 -DestroyService -ServiceName openvpn -Environment dev
 ```
 
 ### Helm

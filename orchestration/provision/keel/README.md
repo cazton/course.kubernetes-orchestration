@@ -17,13 +17,13 @@ This chart can be installed manually or by using the *project-tasks* script.
 #### Install
 
 ```powershell
-./scripts/project-tasks.ps1 -ProvisionService -ServiceName keel -CloudProvider aws
+./scripts/project-tasks.ps1 -ProvisionService -ServiceName keel -Environment dev
 ```
 
 #### Uninstall
 
 ```powershell
-./scripts/project-tasks.ps1 -DestroyService -ServiceName keel -CloudProvider aws
+./scripts/project-tasks.ps1 -DestroyService -ServiceName keel -Environment dev
 ```
 
 ### Helm

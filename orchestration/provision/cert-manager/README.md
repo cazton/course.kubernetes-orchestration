@@ -18,13 +18,13 @@ This chart can be installed manually or by using the *project-tasks* script.
 #### Install
 
 ```powershell
-./scripts/project-tasks.ps1 -ProvisionService -ServiceName cert-manager -CloudProvider aws
+./scripts/project-tasks.ps1 -ProvisionService -ServiceName cert-manager -Environment dev
 ```
 
 #### Uninstall
 
 ```powershell
-./scripts/project-tasks.ps1 -DestroyService -ServiceName cert-manager -CloudProvider aws
+./scripts/project-tasks.ps1 -DestroyService -ServiceName cert-manager -Environment dev
 ```
 
 ### Helm

@@ -7,7 +7,7 @@ replicaCount: 1
 fullnameOverride: courses-service
 
 image:
-  repository: demochristophertown.azurecr.io/k8s/courses-service
+  repository: christophla/movie-catalog
   tag: "latest"
   pullPolicy: Always
   pullSecret: docker-registry

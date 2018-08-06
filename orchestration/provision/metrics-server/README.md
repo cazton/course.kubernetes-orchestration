@@ -17,13 +17,13 @@ This chart can be installed manually or by using the *project-tasks* script.
 #### Install
 
 ```powershell
-./scripts/project-tasks.ps1 -ProvisionService -ServiceName metrics-server -CloudProvider aws
+./scripts/project-tasks.ps1 -ProvisionService -ServiceName metrics-server -Environment dev
 ```
 
 #### Uninstall
 
 ```powershell
-./scripts/project-tasks.ps1 -DestroyService -ServiceName metrics-server -CloudProvider aws
+./scripts/project-tasks.ps1 -DestroyService -ServiceName metrics-server -Environment dev
 ```
 
 ### Helm

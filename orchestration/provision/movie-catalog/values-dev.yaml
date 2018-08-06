@@ -7,9 +7,9 @@ replicaCount: 1
 fullnameOverride: courses-service
 
 image:
-  repository: courses-service
+  repository: movie-catalog # localhost
   tag: "latest"
-  pullPolicy: IfNotPresent 
+  pullPolicy: Never
   # pullSecret: docker-registry
 
 service:
@@ -19,21 +19,27 @@ service:
   internalPort: 80
   livenessProbePath: ping
   readinessProbePath: /health
-  
+
 ingress:
   enabled: true
   hosts:
-    - courses-service.dev.christophertown.com
+    - courses-service.christophertown.com
   annotations:
+    certmanager.k8s.io/cluster-issuer: letsencrypt-staging
     kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+  tls:
+    - secretName: courses-service-nginx-ingress-int-crt
+      hosts:
+        - courses-service.christophertown.com
 
 resources:
   limits:
-    cpu: 100m
-    memory: 192Mi
+    cpu: 900m
+    memory: 1024Mi
   requests:
-    cpu: 50m
-    memory: 64Mi
+    cpu: 128m
+    memory: 128Mi
 
 env:
   ASPNETCORE_ENVIRONMENT: "integration"

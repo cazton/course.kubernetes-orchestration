@@ -24,13 +24,13 @@ This chart can be installed manually or by using the *project-tasks* script.
 #### Install
 
 ```powershell
-./scripts/project-tasks.ps1 -ProvisionService -ServiceName prometheus -CloudProvider aws
+./scripts/project-tasks.ps1 -ProvisionService -ServiceName prometheus -Environment dev
 ```
 
 #### Uninstall
 
 ```powershell
-./scripts/project-tasks.ps1 -DestroyService -ServiceName prometheus -CloudProvider aws
+./scripts/project-tasks.ps1 -DestroyService -ServiceName prometheus -Environment dev
 ```
 
 ### Helm

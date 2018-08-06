@@ -28,14 +28,14 @@ Powershell and Bash scripts are provided to help with the orchestration of you c
 
 ## Deploying a Kubernetes Cluster
 
-Terraform configurations are provided to provision a cluster to AWS (EKS) and Azure (AKS) cloud platforms.
+Terraform configurations are provided to provision a cluster to environments defined in `provision.yaml`.
 
 
 ### Options
 
-| Name              | PowerShell       | Bash                | Values
-|-                  |-                 |-                    |-
-| Cloud Provider    | -CloudProvider   | -c, --cloud-provider| aws, azure
+| Name              | PowerShell       | Bash              | Values
+|-                  |-                 |-                  |-
+| Environment       | -Environment     | -e, --environment | user defined
 
 
 ### Flags
@@ -48,13 +48,13 @@ Terraform configurations are provided to provision a cluster to AWS (EKS) and Az
 ### Powershell
 
 ```
-.\scripts\project-tasks.ps1 -ProvisionCluster -CloudProvider <provider>
+.\scripts\project-tasks.ps1 -ProvisionCluster -Environement <name>
 ```
 
 ### Bash
 
 ```
-.\scripts\project-tasks.sh provision-cluster --cloud-provider=<provider>
+.\scripts\project-tasks.sh provision-cluster --environment=<name>
 ```
 
 ---
@@ -68,7 +68,7 @@ To completely remove a deployed cluster, run the following:
 
 | Name              | PowerShell       | Bash                | Values
 |-                  |-                 |-                    |-
-| Cloud Provider    | -CloudProvider   | -c, --cloud-provider| aws, azure
+| Environment       | -Environment     | -e, --environment | user defined
 
 ### Flags
 
@@ -85,7 +85,7 @@ To completely remove a deployed cluster, run the following:
 #### Bash
 
 ```
-.\scripts\project-tasks.sh destroy-cluster --cloud-provider=<provider>
+.\scripts\project-tasks.sh destroy-cluster --environment=<name>
 ```
 
 ---
@@ -96,44 +96,44 @@ You can via the kubernetes dashboard running within the cluster securely.
 
 ### Options
 
-| Name              | PowerShell       | Bash                | Values     | Default
-|-                  |-                 |-                    |-           |-
-| Cloud Provider    | -CloudProvider   | -c, --cloud-provider| aws, azure | aws
+| Name              | PowerShell       | Bash                | Values     
+|-                  |-                 |-                    |-           
+| Environment       | -Environment     | -e, --environment   | user defined
 
 #### Powershell
 
 ```
-.\scripts\project-tasks.ps1 -Dashboard -CloudProvider <provider>
+.\scripts\project-tasks.ps1 -Dashboard -Environment <name> 
 ```
 
 #### Bash
 
 ```
-.\scripts\project-tasks.sh dashbaord --cloud-provider=<provider>
+.\scripts\project-tasks.sh dashbaord --environment=<name>
 ```
 
 ---
 
 ## Initialize Kubectl Context
 
-You can initialize the kubectl context for a given cloud provider. This is automatically done when you provision a cluster.
+You can initialize the kubectl context for a given environment. This is automatically done when you provision a cluster.
 
 ### Options
 
-| Name              | PowerShell       | Bash                | Values     | Default
-|-                  |-                 |-                    |-           |-
-| Cloud Provider    | -CloudProvider   | -c, --cloud-provider| aws, azure | aws
+| Name              | PowerShell       | Bash                | Values     
+|-                  |-                 |-                    |-           
+| Environment       | -Environment     | -e, --environment   | user defined
 
 ### Powershell
 
 ```
-.\scripts\project-tasks.ps1 -InitContext -CloudProvider <provider> 
+.\scripts\project-tasks.ps1 -InitContext -Environment <name> 
 ```
 
 ### Bash
 
 ```
-.\scripts\project-tasks.sh init-context --cloud-provider=<provider> 
+.\scripts\project-tasks.sh init-context --environment=<name> 
 ```
 
 ---
@@ -267,11 +267,11 @@ You can disable confirmation prompts with: `-a, --auto-approve`
 ### Usage
 
 ```
-.\scripts\project-tasks.sh provision-cluster -cloud-provider aws
+.\scripts\project-tasks.sh provision-cluster --environment=<name>
 ```
 
 ```
-.\scripts\project-tasks.ps1 -ProvisionCluster -cloud-provider aws
+.\scripts\project-tasks.ps1 -ProvisionCluster -Environment <name>
 ```
 
 ---
