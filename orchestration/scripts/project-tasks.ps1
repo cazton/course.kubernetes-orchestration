@@ -114,7 +114,10 @@ Function Dashboard () {
         "aws"   { cd .\kubernetes\aws }
         "azure" { cd .\kubernetes\azure }     
         "local" {
-            start "http://localhost:8001/api/v1/namespaces/default/services/https:kubernetes-dashboard:/proxy/"
+            $tokenSecret = $(kubectl -n kube-system get secrets | Select-String kubernetes-dashboard |  %{ $_.ToString().split()[0] } | %{ kubectl -n kube-system describe secret $_ })
+            Write-Output $tokenSecret
+            # $tokenSecret | grep token: | %{ $($_.ToString() -split '\s+')[1] } | clip
+            start "http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:https/proxy/"
             # kubectl port-forward svc/kube-dashboard-kubernetes-dashboard 8000:8443
             kubectl proxy 
             Exit 0

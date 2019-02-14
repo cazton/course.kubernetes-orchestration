@@ -64,7 +64,7 @@ resources:
 ingress:
   ## If true, Kubernetes Dashboard Ingress will be created.
   ##
-  enabled: true
+  enabled: false
 
   ## Kubernetes Dashboard Ingress annotations
   ##
@@ -73,6 +73,7 @@ ingress:
     kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
     nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 
   ## Kubernetes Dashboard Ingress path
   ##
@@ -94,11 +95,11 @@ ingress:
 
 rbac:
   # Specifies whether RBAC resources should be created
-  create: false
+  create: true
 
   # Specifies whether cluster-admin ClusterRole will be used for dashboard
   # ServiceAccount (NOT RECOMMENDED).
-  clusterAdminRole: false
+  clusterAdminRole: true
 
 serviceAccount:
   # Specifies whether a service account should be created

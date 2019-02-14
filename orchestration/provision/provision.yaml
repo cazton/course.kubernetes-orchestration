@@ -7,7 +7,7 @@ environments:
   dev: 
     description: Development Environment (Docker K8S)
     context: docker-for-desktop
-    hostfile: true
+    hostfile: false
     hostname: dev.christophertown.com
     override: dev
     provider: local
@@ -95,10 +95,18 @@ services:
     chart: stable/grafana
     namespace: monitoring
 
+  heapster:
+    chart: stable/heapster
+    description: Heaptser metrics
+    directory: ./core/heapster
+    namespace: kube-system
+
   kubernetes-dashboard:
     description: Kubernetes dashboard
     chart: stable/kubernetes-dashboard
-    namespace: default
+    namespace: kube-system
+    post-deploy:
+      - manifests/service-account.yaml
 
   kube-state-metrics:
     description: Kube state metrics service
